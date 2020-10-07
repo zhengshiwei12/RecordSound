@@ -149,3 +149,76 @@ where teacher.Tname='张三'
 and   teacher.TId=course.TId
 and   course.CId=sc.CId
 and   sc.SId=student.SId
+
+-- 查询没有学完所有课程的学生信息
+--所以课程的数量
+
+select count(*) 课程数量 from Course;
+-- 每个学生课程数量
+select Student.Sid,Student.Sname,Count(SC.score) AS 课程数量
+from Student left join SC
+on Student.Sid=SC.Sid
+group by Student.Sid
+having Count(SC.score)=(select count(*) 课程数量 from Course);
+
+select Student.*,count(Student.Sid)
+from Student left JOIN SC on Student.Sid=SC.Sid 
+group by(Student.SId) having count(Student.Sid)<3;
+
+select Student.*
+from Student
+where Student.Sid not in
+(select Sid from SC 
+group by Sid
+having count(Cid)=(select count(*) 课程数量 from Course));
+
+select student.*
+from student 
+where student.SId not in ( select sc.SId
+from sc
+group by sc.SId
+having count(*)=(select count(CId) from course))
+
+-- 查询与01号同学学习完全相同的其他同学的信息
+
+
+
+select Student.* from Student 
+where Student.Sid not in
+
+and Student.Sid!='01';
+
+select * from Student left join SC on Student.Sid=SC.Sid;
+
+select t1.SId A,sc.SId B
+from 
+(select student.SId,t.CId
+from student ,(select sc.CId from sc where sc.SId='05') as t )as t1 
+left join sc on t1.SId=sc.SId and t1.CId=sc.CId
+
+
+select * from Course union all select * from Course;
+
+select student.SId,t.CId
+from student ,(select sc.CId from sc where sc.SId='01') as t 
+
+select * 
+from
+(select *
+from 
+(select *
+from student ,(select sc.CId from sc where sc.SId='05') as t )as t1 
+left join sc on t1.SId=sc.SId and t1.CId=sc.CId
+union
+select * from 
+(select *
+from student ,(select sc.CId from sc where sc.SId='05') as t) as t2
+right join sc on t2.SId=sc.SId and t2.CId=sc.CId) as m
+where m.CId is null AND m.Sname is null
+
+
+SELECT * FROM student WHERE sid NOT IN(
+SELECT t1.sid FROM (SELECT t1.sid,t2.score FROM (SELECT t1.sid,t2.cid FROM student t1,(SELECT cid FROM sc WHERE sid = '01') t2) t1 LEFT JOIN sc t2 ON t1.sid = t2.sid AND t1.cid = t2.cid) t1 WHERE t1.score IS NULL
+) AND sid NOT IN(
+SELECT t1.t2_sid 'sid' FROM (SELECT t1.sid 't1_sid',t2.sid 't2_sid',t2.score FROM (SELECT t1.sid,t2.cid FROM `student` t1,(SELECT cid FROM `sc` WHERE sid = '01') t2) t1 RIGHT JOIN sc t2 ON t1.sid = t2.sid AND t1.cid = t2.cid) t1 WHERE t1.t1_sid IS NULL
+)
