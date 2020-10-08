@@ -222,3 +222,10 @@ SELECT t1.sid FROM (SELECT t1.sid,t2.score FROM (SELECT t1.sid,t2.cid FROM stude
 ) AND sid NOT IN(
 SELECT t1.t2_sid 'sid' FROM (SELECT t1.sid 't1_sid',t2.sid 't2_sid',t2.score FROM (SELECT t1.sid,t2.cid FROM `student` t1,(SELECT cid FROM `sc` WHERE sid = '01') t2) t1 RIGHT JOIN sc t2 ON t1.sid = t2.sid AND t1.cid = t2.cid) t1 WHERE t1.t1_sid IS NULL
 )
+
+
+--查询张三老师讲授的任意一门课的学生姓名
+
+use digital;
+select TId from teacher where Tname='张三';
+select * from Course;
