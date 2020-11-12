@@ -17,6 +17,11 @@
         "sstream": "cpp",
         "tuple": "cpp",
         "memory_resource": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "pthread_alloc": "cpp"
     }
 }
